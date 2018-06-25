@@ -1,18 +1,18 @@
-package io.github.ilyazinkovich.hateoas.promotions;
+package io.github.ilyazinkovich.hateoas.promotions.domain;
 
 import java.util.Objects;
 import java.util.UUID;
 
-public class PromoCodeId {
+public class ClientId {
 
   private final String uid;
 
-  public PromoCodeId(final String uid) {
+  public ClientId(final String uid) {
     this.uid = uid;
   }
 
-  static PromoCodeId next() {
-    return new PromoCodeId(UUID.randomUUID().toString());
+  public static ClientId next() {
+    return new ClientId(UUID.randomUUID().toString());
   }
 
   @Override
@@ -23,8 +23,8 @@ public class PromoCodeId {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    final PromoCodeId that = (PromoCodeId) o;
-    return Objects.equals(uid, that.uid);
+    final ClientId clientId = (ClientId) o;
+    return Objects.equals(uid, clientId.uid);
   }
 
   @Override

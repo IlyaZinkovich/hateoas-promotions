@@ -1,4 +1,4 @@
-package io.github.ilyazinkovich.hateoas.promotions;
+package io.github.ilyazinkovich.hateoas.promotions.domain;
 
 public interface PersonalPromoCodes extends PromoCodes {
 

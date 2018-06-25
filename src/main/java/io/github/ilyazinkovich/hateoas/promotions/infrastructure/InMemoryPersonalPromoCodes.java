@@ -3,11 +3,11 @@ package io.github.ilyazinkovich.hateoas.promotions.infrastructure;
 import static java.util.Collections.emptySet;
 import static java.util.concurrent.ConcurrentHashMap.newKeySet;
 
-import io.github.ilyazinkovich.hateoas.promotions.ClientId;
-import io.github.ilyazinkovich.hateoas.promotions.PersonalPromoCode;
-import io.github.ilyazinkovich.hateoas.promotions.PersonalPromoCodes;
-import io.github.ilyazinkovich.hateoas.promotions.PromoCode;
-import io.github.ilyazinkovich.hateoas.promotions.Query;
+import io.github.ilyazinkovich.hateoas.promotions.domain.ClientId;
+import io.github.ilyazinkovich.hateoas.promotions.domain.PersonalPromoCode;
+import io.github.ilyazinkovich.hateoas.promotions.domain.PersonalPromoCodes;
+import io.github.ilyazinkovich.hateoas.promotions.domain.PromoCode;
+import io.github.ilyazinkovich.hateoas.promotions.domain.Query;
 import java.util.Map;
 import java.util.Set;
 

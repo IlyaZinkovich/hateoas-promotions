@@ -3,6 +3,17 @@ package io.github.ilyazinkovich.hateoas.promotions;
 import static java.util.stream.Collectors.toSet;
 import static org.assertj.core.api.Assertions.assertThat;
 
+import io.github.ilyazinkovich.hateoas.promotions.domain.ClientId;
+import io.github.ilyazinkovich.hateoas.promotions.domain.CombinedPromoCodes;
+import io.github.ilyazinkovich.hateoas.promotions.domain.PersonalPromoCode;
+import io.github.ilyazinkovich.hateoas.promotions.domain.PersonalPromoCodes;
+import io.github.ilyazinkovich.hateoas.promotions.domain.PromoCode;
+import io.github.ilyazinkovich.hateoas.promotions.domain.PromoCodeId;
+import io.github.ilyazinkovich.hateoas.promotions.domain.PromoCodes;
+import io.github.ilyazinkovich.hateoas.promotions.domain.Query;
+import io.github.ilyazinkovich.hateoas.promotions.domain.Region;
+import io.github.ilyazinkovich.hateoas.promotions.domain.RegionalPromoCode;
+import io.github.ilyazinkovich.hateoas.promotions.domain.RegionalPromoCodes;
 import io.github.ilyazinkovich.hateoas.promotions.infrastructure.InMemoryPersonalPromoCodes;
 import io.github.ilyazinkovich.hateoas.promotions.infrastructure.InMemoryRegionalPromoCodes;
 import java.util.HashSet;
