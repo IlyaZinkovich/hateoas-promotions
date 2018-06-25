@@ -1,16 +1,21 @@
 package io.github.ilyazinkovich.hateoas.promotions.api;
 
 import static java.util.stream.Collectors.toSet;
+import static ratpack.http.Status.OK;
 import static ratpack.jackson.Jackson.json;
+import static ratpack.jackson.Jackson.jsonNode;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.github.ilyazinkovich.hateoas.promotions.domain.ClientId;
 import io.github.ilyazinkovich.hateoas.promotions.domain.CombinedPromoCodes;
+import io.github.ilyazinkovich.hateoas.promotions.domain.PersonalPromoCode;
 import io.github.ilyazinkovich.hateoas.promotions.domain.PersonalPromoCodes;
 import io.github.ilyazinkovich.hateoas.promotions.domain.PromoCode;
+import io.github.ilyazinkovich.hateoas.promotions.domain.PromoCodeId;
 import io.github.ilyazinkovich.hateoas.promotions.domain.Query;
 import io.github.ilyazinkovich.hateoas.promotions.domain.Region;
+import io.github.ilyazinkovich.hateoas.promotions.domain.RegionalPromoCode;
 import io.github.ilyazinkovich.hateoas.promotions.domain.RegionalPromoCodes;
 import io.github.ilyazinkovich.hateoas.promotions.infrastructure.InMemoryPersonalPromoCodes;
 import io.github.ilyazinkovich.hateoas.promotions.infrastructure.InMemoryRegionalPromoCodes;
@@ -36,12 +41,42 @@ public class PromoCodesApi {
     final ObjectMapper mapper = new ObjectMapper();
     final Action<Chain> actionChain = chain -> chain
         .get(index())
+        .post("promocodes/personal", createPersonalPromoCode(personalPromoCodes))
+        .post("promocodes/regional", createRegionalPromoCode(regionalPromoCodes))
         .get("promocodes", queryPromoCodes(combinedPromoCodes, mapper));
     RatpackServer.start(server -> server.handlers(actionChain));
   }
 
   private static Handler index() {
     return ctx -> ctx.render("Welcome to PromoCodes API!!!");
+  }
+
+  private static Handler createPersonalPromoCode(final PersonalPromoCodes personalPromoCodes) {
+    return ctx -> ctx.parse(jsonNode()).map(CreatePersonalPromoCode::fromJson)
+        .next(handleCreatePersonalPromoCodeCommand(personalPromoCodes))
+        .then(command -> ctx.getResponse().status(OK).send());
+  }
+
+  private static Action<Optional<CreatePersonalPromoCode>> handleCreatePersonalPromoCodeCommand(
+      final PersonalPromoCodes personalPromoCodes) {
+    return optionalCommand -> optionalCommand.ifPresent(command -> {
+      final PersonalPromoCode promoCode = new PersonalPromoCode(PromoCodeId.next());
+      personalPromoCodes.store(command.clientId, promoCode);
+    });
+  }
+
+  private static Handler createRegionalPromoCode(final RegionalPromoCodes regionalPromoCodes) {
+    return ctx -> ctx.parse(jsonNode()).map(CreateRegionalPromoCode::fromJson)
+        .next(handleCreateRegionalPromoCodeCommand(regionalPromoCodes))
+        .then(command -> ctx.getResponse().status(OK).send());
+  }
+
+  private static Action<Optional<CreateRegionalPromoCode>> handleCreateRegionalPromoCodeCommand(
+      final RegionalPromoCodes regionalPromoCodes) {
+    return optionalCommand -> optionalCommand.ifPresent(command -> {
+      final RegionalPromoCode promoCode = new RegionalPromoCode(PromoCodeId.next());
+      regionalPromoCodes.store(command.region, promoCode);
+    });
   }
 
   private static Handler queryPromoCodes(final CombinedPromoCodes combinedPromoCodes,
