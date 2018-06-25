@@ -20,10 +20,11 @@ import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ExecutionException;
 import java.util.stream.Stream;
 import org.junit.jupiter.api.Test;
 
-class PromotionsTest {
+class PromoCodesTest {
 
   @Test
   void storeAndQueryPersonalPromoCodes() {
@@ -58,7 +59,7 @@ class PromotionsTest {
   }
 
   @Test
-  void storeAndQueryCombinedPromoCodes() {
+  void storeAndQueryCombinedPromoCodes() throws ExecutionException, InterruptedException {
     final PersonalPromoCodes personalPromoCodes =
         new InMemoryPersonalPromoCodes(new ConcurrentHashMap<>());
     final RegionalPromoCodes regionalPromoCodes =
@@ -78,7 +79,8 @@ class PromotionsTest {
     regionalPromoCodes.store(region, regionalPromoCode);
 
     final Set<? extends PromoCode> queriedPromoCodes = combinedPromoCodes
-        .query(new Query().withClientId(Optional.of(clientId)).withRegion(Optional.of(region)));
+        .query(new Query().withClientId(Optional.of(clientId)).withRegion(Optional.of(region)))
+        .get();
     assertThat(queriedPromoCodes)
         .isEqualTo(Stream.of(personalPromoCode, regionalPromoCode).collect(toSet()));
   }

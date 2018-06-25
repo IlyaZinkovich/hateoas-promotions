@@ -1,8 +1,10 @@
 package io.github.ilyazinkovich.hateoas.promotions.domain;
 
-import static java.util.stream.Collectors.toSet;
+import static java.util.Collections.emptySet;
+import static java.util.concurrent.CompletableFuture.completedFuture;
 
 import java.util.Set;
+import java.util.concurrent.CompletableFuture;
 
 public class CombinedPromoCodes {
 
@@ -12,10 +14,12 @@ public class CombinedPromoCodes {
     this.promoCodes = promoCodes;
   }
 
-  public Set<? extends PromoCode> query(final Query query) {
+  public CompletableFuture<? extends Set<? extends PromoCode>> query(final Query query) {
     return promoCodes.stream()
-        .map(promos -> promos.query(query))
-        .flatMap(Set::stream)
-        .collect(toSet());
+        .map(promos -> CompletableFuture.supplyAsync(() -> promos.query(query)))
+        .reduce((left, right) -> left.thenCombine(right, (leftSet, rightSet) -> {
+          leftSet.addAll(rightSet);
+          return leftSet;
+        })).orElse(completedFuture(emptySet()));
   }
 }
