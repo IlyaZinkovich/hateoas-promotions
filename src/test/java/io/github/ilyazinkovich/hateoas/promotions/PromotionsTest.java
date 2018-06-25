@@ -17,6 +17,7 @@ import io.github.ilyazinkovich.hateoas.promotions.domain.RegionalPromoCodes;
 import io.github.ilyazinkovich.hateoas.promotions.infrastructure.InMemoryPersonalPromoCodes;
 import io.github.ilyazinkovich.hateoas.promotions.infrastructure.InMemoryRegionalPromoCodes;
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Stream;
@@ -34,7 +35,7 @@ class PromotionsTest {
     promoCodes.store(clientId, personalPromoCode);
 
     final Set<? extends PromoCode> queriedPromoCodes =
-        promoCodes.query(new Query().withClientId(clientId));
+        promoCodes.query(new Query().withClientId(Optional.of(clientId)));
     final Set<PromoCode> expected = new HashSet<>();
     expected.add(personalPromoCode);
     assertThat(queriedPromoCodes).isEqualTo(expected);
@@ -50,7 +51,7 @@ class PromotionsTest {
     promoCodes.store(region, regionalPromoCode);
 
     final Set<? extends PromoCode> queriedPromoCodes =
-        promoCodes.query(new Query().withRegion(region));
+        promoCodes.query(new Query().withRegion(Optional.of(region)));
     final Set<PromoCode> expected = new HashSet<>();
     expected.add(regionalPromoCode);
     assertThat(queriedPromoCodes).isEqualTo(expected);
@@ -77,7 +78,7 @@ class PromotionsTest {
     regionalPromoCodes.store(region, regionalPromoCode);
 
     final Set<? extends PromoCode> queriedPromoCodes = combinedPromoCodes
-        .query(new Query().withClientId(clientId).withRegion(region));
+        .query(new Query().withClientId(Optional.of(clientId)).withRegion(Optional.of(region)));
     assertThat(queriedPromoCodes)
         .isEqualTo(Stream.of(personalPromoCode, regionalPromoCode).collect(toSet()));
   }

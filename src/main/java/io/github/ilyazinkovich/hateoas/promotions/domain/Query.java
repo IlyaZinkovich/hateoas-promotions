@@ -12,8 +12,8 @@ public class Query {
     this.region = Optional.empty();
   }
 
-  public Query withClientId(final ClientId clientId) {
-    this.clientId = Optional.ofNullable(clientId);
+  public Query withClientId(final Optional<ClientId> clientId) {
+    this.clientId = clientId;
     return this;
   }
 
@@ -21,8 +21,8 @@ public class Query {
     return clientId;
   }
 
-  public Query withRegion(final Region region) {
-    this.region = Optional.ofNullable(region);
+  public Query withRegion(final Optional<Region> region) {
+    this.region = region;
     return this;
   }
 
