@@ -26,8 +26,7 @@ public class PersonalPromoCodeCreationHandler implements Handler {
         .then(command -> ctx.getResponse().status(OK).send());
   }
 
-
-  private static Action<Optional<CreatePersonalPromoCode>> handleCreatePersonalPromoCodeCommand(
+  private Action<Optional<CreatePersonalPromoCode>> handleCreatePersonalPromoCodeCommand(
       final PersonalPromoCodes personalPromoCodes) {
     return optionalCommand -> optionalCommand.ifPresent(command -> {
       final PersonalPromoCode promoCode = new PersonalPromoCode(PromoCodeId.next());

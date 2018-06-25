@@ -26,7 +26,7 @@ public class RegionalPromoCodeCreationHandler implements Handler {
         .then(command -> ctx.getResponse().status(OK).send());
   }
 
-  private static Action<Optional<CreateRegionalPromoCode>> handleCreateRegionalPromoCodeCommand(
+  private Action<Optional<CreateRegionalPromoCode>> handleCreateRegionalPromoCodeCommand(
       final RegionalPromoCodes regionalPromoCodes) {
     return optionalCommand -> optionalCommand.ifPresent(command -> {
       final RegionalPromoCode promoCode = new RegionalPromoCode(PromoCodeId.next());
