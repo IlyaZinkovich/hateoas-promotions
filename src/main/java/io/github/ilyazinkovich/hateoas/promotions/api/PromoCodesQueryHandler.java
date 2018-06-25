@@ -3,11 +3,14 @@ package io.github.ilyazinkovich.hateoas.promotions.api;
 import static ratpack.jackson.Jackson.json;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.github.ilyazinkovich.hateoas.promotions.domain.ClientId;
 import io.github.ilyazinkovich.hateoas.promotions.domain.CombinedPromoCodes;
+import io.github.ilyazinkovich.hateoas.promotions.domain.PromoCode;
 import io.github.ilyazinkovich.hateoas.promotions.domain.Query;
 import io.github.ilyazinkovich.hateoas.promotions.domain.Region;
 import java.util.Optional;
+import java.util.Set;
 import ratpack.handling.Context;
 import ratpack.handling.Handler;
 import ratpack.util.MultiValueMap;
@@ -30,8 +33,9 @@ public class PromoCodesQueryHandler implements Handler {
         .map(ClientId::new);
     final Optional<Region> region = queryParams.getAll("region").stream().findFirst()
         .map(Region::new);
-    combinedPromoCodes.query(new Query().withClientId(clientId).withRegion(region))
-        .thenApplyAsync(promoCodes -> new PromoCodesResponse(promoCodes).toJson(mapper))
-        .thenAccept(promoCodesJson -> ctx.render(json(promoCodesJson)));
+    final Set<? extends PromoCode> promoCodes = combinedPromoCodes
+        .query(new Query().withClientId(clientId).withRegion(region));
+    final ObjectNode response = new PromoCodesResponse(promoCodes).toJson(mapper);
+    ctx.render(json(response));
   }
 }
