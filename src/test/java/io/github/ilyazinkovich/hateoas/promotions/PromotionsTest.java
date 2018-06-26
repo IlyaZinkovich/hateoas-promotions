@@ -1,5 +1,6 @@
 package io.github.ilyazinkovich.hateoas.promotions;
 
+import static java.lang.String.format;
 import static java.util.stream.Collectors.toSet;
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -7,8 +8,8 @@ import io.github.ilyazinkovich.hateoas.promotions.domain.ClientId;
 import io.github.ilyazinkovich.hateoas.promotions.domain.CombinedPromoCodes;
 import io.github.ilyazinkovich.hateoas.promotions.domain.PersonalPromoCode;
 import io.github.ilyazinkovich.hateoas.promotions.domain.PersonalPromoCodes;
-import io.github.ilyazinkovich.hateoas.promotions.domain.PromoCode;
 import io.github.ilyazinkovich.hateoas.promotions.domain.PromoCodeId;
+import io.github.ilyazinkovich.hateoas.promotions.domain.PromoCodeResource;
 import io.github.ilyazinkovich.hateoas.promotions.domain.PromoCodes;
 import io.github.ilyazinkovich.hateoas.promotions.domain.Query;
 import io.github.ilyazinkovich.hateoas.promotions.domain.Region;
@@ -34,10 +35,11 @@ class PromotionsTest {
 
     promoCodes.store(clientId, personalPromoCode);
 
-    final Set<? extends PromoCode> queriedPromoCodes =
+    final Set<? extends PromoCodeResource> queriedPromoCodes =
         promoCodes.query(new Query().withClientId(Optional.of(clientId)));
-    final Set<PromoCode> expected = new HashSet<>();
-    expected.add(personalPromoCode);
+    final Set<PromoCodeResource> expected = new HashSet<>();
+    final String uri = format("/personal/%s/%s", clientId.uid, promoCodeId);
+    expected.add(new PromoCodeResource(uri, personalPromoCode));
     assertThat(queriedPromoCodes).isEqualTo(expected);
   }
 
@@ -50,10 +52,11 @@ class PromotionsTest {
 
     promoCodes.store(region, regionalPromoCode);
 
-    final Set<? extends PromoCode> queriedPromoCodes =
+    final Set<? extends PromoCodeResource> queriedPromoCodes =
         promoCodes.query(new Query().withRegion(Optional.of(region)));
-    final Set<PromoCode> expected = new HashSet<>();
-    expected.add(regionalPromoCode);
+    final Set<PromoCodeResource> expected = new HashSet<>();
+    final String uri = format("/regional/%s/%s", region.name, promoCodeId);
+    expected.add(new PromoCodeResource(uri, regionalPromoCode));
     assertThat(queriedPromoCodes).isEqualTo(expected);
   }
 
@@ -77,9 +80,17 @@ class PromotionsTest {
     final RegionalPromoCode regionalPromoCode = new RegionalPromoCode(regionalPromoCodeId);
     regionalPromoCodes.store(region, regionalPromoCode);
 
-    final Set<? extends PromoCode> queriedPromoCodes = combinedPromoCodes
+    final Set<? extends PromoCodeResource> queriedPromoCodes = combinedPromoCodes
         .query(new Query().withClientId(Optional.of(clientId)).withRegion(Optional.of(region)));
-    assertThat(queriedPromoCodes)
-        .isEqualTo(Stream.of(personalPromoCode, regionalPromoCode).collect(toSet()));
+
+    final String personalPromoCodeUri =
+        format("/personal/%s/%s", clientId.uid, personalPromoCodeId);
+    final String regionalPromoCodeUri =
+        format("/regional/%s/%s", region.name, regionalPromoCodeId);
+    final Set<PromoCodeResource> expected = Stream.of(
+        new PromoCodeResource(personalPromoCodeUri, personalPromoCode),
+        new PromoCodeResource(regionalPromoCodeUri, regionalPromoCode)
+    ).collect(toSet());
+    assertThat(queriedPromoCodes).isEqualTo(expected);
   }
 }

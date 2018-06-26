@@ -16,11 +16,6 @@ public class PersonalPromoCode implements PromoCode {
   }
 
   @Override
-  public String type() {
-    return "personal";
-  }
-
-  @Override
   public boolean equals(final Object o) {
     if (this == o) {
       return true;

@@ -16,11 +16,6 @@ public class RegionalPromoCode implements PromoCode {
   }
 
   @Override
-  public String type() {
-    return "regional";
-  }
-
-  @Override
   public boolean equals(final Object o) {
     if (this == o) {
       return true;

@@ -5,7 +5,7 @@ import java.util.UUID;
 
 public class ClientId {
 
-  private final String uid;
+  public final String uid;
 
   public ClientId(final String uid) {
     this.uid = uid;

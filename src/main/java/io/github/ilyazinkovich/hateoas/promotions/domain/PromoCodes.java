@@ -4,5 +4,5 @@ import java.util.Set;
 
 public interface PromoCodes {
 
-  Set<? extends PromoCode> query(final Query query);
+  Set<? extends PromoCodeResource> query(final Query query);
 }

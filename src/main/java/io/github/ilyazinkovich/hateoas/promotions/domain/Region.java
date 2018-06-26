@@ -4,7 +4,7 @@ import java.util.Objects;
 
 public class Region {
 
-  final String name;
+  public final String name;
 
   public Region(final String name) {
     this.name = name;

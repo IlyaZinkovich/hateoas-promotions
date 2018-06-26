@@ -1,9 +1,11 @@
 package io.github.ilyazinkovich.hateoas.promotions.infrastructure;
 
+import static java.lang.String.format;
 import static java.util.Collections.emptySet;
 import static java.util.concurrent.ConcurrentHashMap.newKeySet;
+import static java.util.stream.Collectors.toSet;
 
-import io.github.ilyazinkovich.hateoas.promotions.domain.PromoCode;
+import io.github.ilyazinkovich.hateoas.promotions.domain.PromoCodeResource;
 import io.github.ilyazinkovich.hateoas.promotions.domain.Query;
 import io.github.ilyazinkovich.hateoas.promotions.domain.Region;
 import io.github.ilyazinkovich.hateoas.promotions.domain.RegionalPromoCode;
@@ -28,7 +30,17 @@ public class InMemoryRegionalPromoCodes implements RegionalPromoCodes {
   }
 
   @Override
-  public Set<? extends PromoCode> query(final Query query) {
-    return query.region().map(promoCodes::get).orElse(emptySet());
+  public Set<? extends PromoCodeResource> query(final Query query) {
+    return query.region().map(this::queryByRegion).orElse(emptySet());
+  }
+
+  private Set<PromoCodeResource> queryByRegion(final Region region) {
+    return promoCodes.get(region).stream()
+        .map(promoCode -> new PromoCodeResource(toUri(region, promoCode), promoCode))
+        .collect(toSet());
+  }
+
+  private String toUri(final Region region, final RegionalPromoCode promoCode) {
+    return format("/regional/%s/%s", region.name, promoCode.id());
   }
 }

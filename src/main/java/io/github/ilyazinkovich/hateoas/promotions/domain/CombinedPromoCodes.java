@@ -12,7 +12,7 @@ public class CombinedPromoCodes {
     this.promoCodes = promoCodes;
   }
 
-  public Set<? extends PromoCode> query(final Query query) {
+  public Set<? extends PromoCodeResource> query(final Query query) {
     return promoCodes.stream()
         .map(promos -> promos.query(query))
         .flatMap(Set::stream)

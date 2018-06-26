@@ -6,7 +6,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.github.ilyazinkovich.hateoas.promotions.domain.ClientId;
 import io.github.ilyazinkovich.hateoas.promotions.domain.CombinedPromoCodes;
-import io.github.ilyazinkovich.hateoas.promotions.domain.PromoCode;
+import io.github.ilyazinkovich.hateoas.promotions.domain.PromoCodeResource;
 import io.github.ilyazinkovich.hateoas.promotions.domain.Query;
 import io.github.ilyazinkovich.hateoas.promotions.domain.Region;
 import java.util.Optional;
@@ -33,7 +33,7 @@ public class PromoCodesQueryHandler implements Handler {
         .map(ClientId::new);
     final Optional<Region> region = queryParams.getAll("region").stream().findFirst()
         .map(Region::new);
-    final Set<? extends PromoCode> promoCodes = combinedPromoCodes
+    final Set<? extends PromoCodeResource> promoCodes = combinedPromoCodes
         .query(new Query().withClientId(clientId).withRegion(region));
     final ObjectNode response = new PromoCodesResponse(promoCodes).toJson(mapper);
     ctx.render(json(response));

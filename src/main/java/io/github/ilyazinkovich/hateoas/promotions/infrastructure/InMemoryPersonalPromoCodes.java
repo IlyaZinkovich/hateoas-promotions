@@ -1,12 +1,14 @@
 package io.github.ilyazinkovich.hateoas.promotions.infrastructure;
 
+import static java.lang.String.format;
 import static java.util.Collections.emptySet;
 import static java.util.concurrent.ConcurrentHashMap.newKeySet;
+import static java.util.stream.Collectors.toSet;
 
 import io.github.ilyazinkovich.hateoas.promotions.domain.ClientId;
 import io.github.ilyazinkovich.hateoas.promotions.domain.PersonalPromoCode;
 import io.github.ilyazinkovich.hateoas.promotions.domain.PersonalPromoCodes;
-import io.github.ilyazinkovich.hateoas.promotions.domain.PromoCode;
+import io.github.ilyazinkovich.hateoas.promotions.domain.PromoCodeResource;
 import io.github.ilyazinkovich.hateoas.promotions.domain.Query;
 import java.util.Map;
 import java.util.Set;
@@ -27,7 +29,17 @@ public class InMemoryPersonalPromoCodes implements PersonalPromoCodes {
   }
 
   @Override
-  public Set<? extends PromoCode> query(final Query query) {
-    return query.clientId().map(promoCodes::get).orElse(emptySet());
+  public Set<? extends PromoCodeResource> query(final Query query) {
+    return query.clientId().map(this::queryByClientId).orElse(emptySet());
+  }
+
+  private Set<PromoCodeResource> queryByClientId(final ClientId clientId) {
+    return promoCodes.get(clientId).stream()
+        .map(promoCode -> new PromoCodeResource(toUri(clientId, promoCode), promoCode))
+        .collect(toSet());
+  }
+
+  private String toUri(final ClientId clientId, final PersonalPromoCode promoCode) {
+    return format("/personal/%s/%s", clientId.uid, promoCode.id());
   }
 }
