@@ -4,7 +4,6 @@ import static ratpack.jackson.Jackson.json;
 import static ratpack.jackson.Jackson.jsonNode;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.github.ilyazinkovich.hateoas.promotions.domain.Client;
 import io.github.ilyazinkovich.hateoas.promotions.domain.ClientId;
 import io.github.ilyazinkovich.hateoas.promotions.domain.Clients;
@@ -35,7 +34,9 @@ public class ClientsApi implements Action<Chain> {
           optionalClientId.map(clientId -> (Runnable) () -> {
             final LogInSuccess response = new LogInSuccess(clientId);
             ctx.render(json(response.toJson(mapper)));
-          }).orElse(() -> ctx.getResponse().status(403)).run();
+          }).orElse(() -> {
+            ctx.getResponse().status(400).send();
+          }).run();
         })
     );
   }
