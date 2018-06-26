@@ -30,6 +30,8 @@ public class PromoCodesApi {
         .put("promocodes/personal/:clientId/:promoCodeId",
             new UsePersonalPromoCodeHandler(personalPromoCodes))
         .post("promocodes/regional", new RegionalPromoCodeCreationHandler(regionalPromoCodes))
+        .put("promocodes/regional/:region/:promoCodeId",
+            new UseRegionalPromoCodeHandler(regionalPromoCodes))
         .get("promocodes", new PromoCodesQueryHandler(combinedPromoCodes, mapper));
     RatpackServer.start(server -> server.handlers(actionChain));
   }

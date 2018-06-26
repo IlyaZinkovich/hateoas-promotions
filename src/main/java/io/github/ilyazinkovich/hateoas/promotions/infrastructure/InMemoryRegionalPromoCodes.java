@@ -5,6 +5,7 @@ import static java.util.Collections.emptySet;
 import static java.util.concurrent.ConcurrentHashMap.newKeySet;
 import static java.util.stream.Collectors.toSet;
 
+import io.github.ilyazinkovich.hateoas.promotions.domain.PromoCodeId;
 import io.github.ilyazinkovich.hateoas.promotions.domain.PromoCodeResource;
 import io.github.ilyazinkovich.hateoas.promotions.domain.Query;
 import io.github.ilyazinkovich.hateoas.promotions.domain.Region;
@@ -27,6 +28,13 @@ public class InMemoryRegionalPromoCodes implements RegionalPromoCodes {
     final Set<RegionalPromoCode> regionalPromoCodes = promoCodes.get(region);
     regionalPromoCodes.add(promoCode);
 
+  }
+
+  @Override
+  public void remove(final Region region, final PromoCodeId promoCodeId) {
+    promoCodes.get(region).stream()
+        .filter(promoCode -> promoCode.id().equals(promoCodeId))
+        .findAny().ifPresent(promoCode -> promoCodes.get(region).remove(promoCode));
   }
 
   @Override
