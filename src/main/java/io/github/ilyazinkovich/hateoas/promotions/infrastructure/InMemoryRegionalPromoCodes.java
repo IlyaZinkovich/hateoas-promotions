@@ -11,6 +11,7 @@ import io.github.ilyazinkovich.hateoas.promotions.domain.Query;
 import io.github.ilyazinkovich.hateoas.promotions.domain.Region;
 import io.github.ilyazinkovich.hateoas.promotions.domain.RegionalPromoCode;
 import io.github.ilyazinkovich.hateoas.promotions.domain.RegionalPromoCodes;
+
 import java.util.Map;
 import java.util.Set;
 

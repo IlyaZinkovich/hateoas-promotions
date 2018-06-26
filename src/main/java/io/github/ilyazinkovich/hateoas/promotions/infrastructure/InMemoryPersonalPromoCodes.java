@@ -11,6 +11,7 @@ import io.github.ilyazinkovich.hateoas.promotions.domain.PersonalPromoCodes;
 import io.github.ilyazinkovich.hateoas.promotions.domain.PromoCodeId;
 import io.github.ilyazinkovich.hateoas.promotions.domain.PromoCodeResource;
 import io.github.ilyazinkovich.hateoas.promotions.domain.Query;
+
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
