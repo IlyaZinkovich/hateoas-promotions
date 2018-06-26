@@ -38,7 +38,7 @@ class PromotionsTest {
     final Set<? extends PromoCodeResource> queriedPromoCodes =
         promoCodes.query(new Query().withClientId(Optional.of(clientId)));
     final Set<PromoCodeResource> expected = new HashSet<>();
-    final String uri = format("/personal/%s/%s", clientId.uid, promoCodeId);
+    final String uri = format("/promocodes/personal/%s/%s", clientId.uid, promoCodeId);
     expected.add(new PromoCodeResource(uri, personalPromoCode));
     assertThat(queriedPromoCodes).isEqualTo(expected);
   }
@@ -55,7 +55,7 @@ class PromotionsTest {
     final Set<? extends PromoCodeResource> queriedPromoCodes =
         promoCodes.query(new Query().withRegion(Optional.of(region)));
     final Set<PromoCodeResource> expected = new HashSet<>();
-    final String uri = format("/regional/%s/%s", region.name, promoCodeId);
+    final String uri = format("/promocodes/regional/%s/%s", region.name, promoCodeId);
     expected.add(new PromoCodeResource(uri, regionalPromoCode));
     assertThat(queriedPromoCodes).isEqualTo(expected);
   }
@@ -84,9 +84,9 @@ class PromotionsTest {
         .query(new Query().withClientId(Optional.of(clientId)).withRegion(Optional.of(region)));
 
     final String personalPromoCodeUri =
-        format("/personal/%s/%s", clientId.uid, personalPromoCodeId);
+        format("/promocodes/personal/%s/%s", clientId.uid, personalPromoCodeId);
     final String regionalPromoCodeUri =
-        format("/regional/%s/%s", region.name, regionalPromoCodeId);
+        format("/promocodes/regional/%s/%s", region.name, regionalPromoCodeId);
     final Set<PromoCodeResource> expected = Stream.of(
         new PromoCodeResource(personalPromoCodeUri, personalPromoCode),
         new PromoCodeResource(regionalPromoCodeUri, regionalPromoCode)
