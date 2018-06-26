@@ -35,12 +35,12 @@ public class InMemoryRegionalPromoCodes implements RegionalPromoCodes {
   }
 
   private Set<PromoCodeResource> queryByRegion(final Region region) {
-    return promoCodes.get(region).stream()
+    return promoCodes.getOrDefault(region, emptySet()).stream()
         .map(promoCode -> new PromoCodeResource(toUri(region, promoCode), promoCode))
         .collect(toSet());
   }
 
   private String toUri(final Region region, final RegionalPromoCode promoCode) {
-    return format("/regional/%s/%s", region.name, promoCode.id());
+    return format("/promocodes/regional/%s/%s", region.name, promoCode.id());
   }
 }

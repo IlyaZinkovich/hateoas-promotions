@@ -8,9 +8,11 @@ import static java.util.stream.Collectors.toSet;
 import io.github.ilyazinkovich.hateoas.promotions.domain.ClientId;
 import io.github.ilyazinkovich.hateoas.promotions.domain.PersonalPromoCode;
 import io.github.ilyazinkovich.hateoas.promotions.domain.PersonalPromoCodes;
+import io.github.ilyazinkovich.hateoas.promotions.domain.PromoCodeId;
 import io.github.ilyazinkovich.hateoas.promotions.domain.PromoCodeResource;
 import io.github.ilyazinkovich.hateoas.promotions.domain.Query;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 
 public class InMemoryPersonalPromoCodes implements PersonalPromoCodes {
@@ -29,17 +31,24 @@ public class InMemoryPersonalPromoCodes implements PersonalPromoCodes {
   }
 
   @Override
+  public void remove(final ClientId clientId, final PromoCodeId promoCodeId) {
+    promoCodes.get(clientId).stream()
+        .filter(promoCode -> promoCode.id().equals(promoCodeId))
+        .findAny().ifPresent(promoCode -> promoCodes.get(clientId).remove(promoCode));
+  }
+
+  @Override
   public Set<? extends PromoCodeResource> query(final Query query) {
     return query.clientId().map(this::queryByClientId).orElse(emptySet());
   }
 
   private Set<PromoCodeResource> queryByClientId(final ClientId clientId) {
-    return promoCodes.get(clientId).stream()
+    return promoCodes.getOrDefault(clientId, emptySet()).stream()
         .map(promoCode -> new PromoCodeResource(toUri(clientId, promoCode), promoCode))
         .collect(toSet());
   }
 
   private String toUri(final ClientId clientId, final PersonalPromoCode promoCode) {
-    return format("/personal/%s/%s", clientId.uid, promoCode.id());
+    return format("/promocodes/personal/%s/%s", clientId.uid, promoCode.id());
   }
 }

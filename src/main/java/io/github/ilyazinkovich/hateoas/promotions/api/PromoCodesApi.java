@@ -27,6 +27,8 @@ public class PromoCodesApi {
     final Action<Chain> actionChain = chain -> chain
         .get(new IndexPageHandler())
         .post("promocodes/personal", new PersonalPromoCodeCreationHandler(personalPromoCodes))
+        .put("promocodes/personal/:clientId/:promoCodeId",
+            new UsePersonalPromoCodeHandler(personalPromoCodes))
         .post("promocodes/regional", new RegionalPromoCodeCreationHandler(regionalPromoCodes))
         .get("promocodes", new PromoCodesQueryHandler(combinedPromoCodes, mapper));
     RatpackServer.start(server -> server.handlers(actionChain));
