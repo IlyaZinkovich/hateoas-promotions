@@ -1,4 +1,4 @@
-package io.github.ilyazinkovich.hateoas.promotions.api;
+package io.github.ilyazinkovich.hateoas.promotions.api.promocodes;
 
 import static ratpack.http.Status.OK;
 

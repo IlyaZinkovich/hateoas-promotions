@@ -1,4 +1,4 @@
-package io.github.ilyazinkovich.hateoas.promotions.api;
+package io.github.ilyazinkovich.hateoas.promotions.api.promocodes;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import io.github.ilyazinkovich.hateoas.promotions.domain.Region;
