@@ -1,16 +1,14 @@
 package io.github.ilyazinkovich.hateoas.promotions.api.promocodes;
 
+import static java.util.stream.Collectors.toSet;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.github.ilyazinkovich.hateoas.promotions.domain.CombinedPromoCodes;
 import io.github.ilyazinkovich.hateoas.promotions.domain.PersonalPromoCodes;
 import io.github.ilyazinkovich.hateoas.promotions.domain.RegionalPromoCodes;
-
+import java.util.stream.Stream;
 import ratpack.func.Action;
 import ratpack.handling.Chain;
-
-import java.util.stream.Stream;
-
-import static java.util.stream.Collectors.toSet;
 
 public class PromoCodesApi implements Action<Chain> {
 

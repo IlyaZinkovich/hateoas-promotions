@@ -11,7 +11,6 @@ import io.github.ilyazinkovich.hateoas.promotions.domain.PersonalPromoCodes;
 import io.github.ilyazinkovich.hateoas.promotions.domain.PromoCodeId;
 import io.github.ilyazinkovich.hateoas.promotions.domain.PromoCodeResource;
 import io.github.ilyazinkovich.hateoas.promotions.domain.Query;
-
 import java.util.Map;
 import java.util.Set;
 
@@ -38,7 +37,7 @@ public class InMemoryPersonalPromoCodes implements PersonalPromoCodes {
   }
 
   @Override
-  public Set<? extends PromoCodeResource> query(final Query query) {
+  public Set<PromoCodeResource> query(final Query query) {
     return query.clientId().map(this::queryByClientId).orElse(emptySet());
   }
 

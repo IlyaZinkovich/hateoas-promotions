@@ -2,8 +2,6 @@ package io.github.ilyazinkovich.hateoas.promotions.api.promocodes;
 
 import static ratpack.http.Status.OK;
 
-import io.github.ilyazinkovich.hateoas.promotions.domain.ClientId;
-import io.github.ilyazinkovich.hateoas.promotions.domain.PersonalPromoCodes;
 import io.github.ilyazinkovich.hateoas.promotions.domain.PromoCodeId;
 import io.github.ilyazinkovich.hateoas.promotions.domain.Region;
 import io.github.ilyazinkovich.hateoas.promotions.domain.RegionalPromoCodes;

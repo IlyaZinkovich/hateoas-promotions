@@ -11,7 +11,6 @@ import io.github.ilyazinkovich.hateoas.promotions.domain.Query;
 import io.github.ilyazinkovich.hateoas.promotions.domain.Region;
 import io.github.ilyazinkovich.hateoas.promotions.domain.RegionalPromoCode;
 import io.github.ilyazinkovich.hateoas.promotions.domain.RegionalPromoCodes;
-
 import java.util.Map;
 import java.util.Set;
 
@@ -39,7 +38,7 @@ public class InMemoryRegionalPromoCodes implements RegionalPromoCodes {
   }
 
   @Override
-  public Set<? extends PromoCodeResource> query(final Query query) {
+  public Set<PromoCodeResource> query(final Query query) {
     return query.region().map(this::queryByRegion).orElse(emptySet());
   }
 

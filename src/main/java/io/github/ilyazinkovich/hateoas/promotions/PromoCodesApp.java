@@ -10,10 +10,9 @@ import io.github.ilyazinkovich.hateoas.promotions.domain.RegionalPromoCodes;
 import io.github.ilyazinkovich.hateoas.promotions.infrastructure.InMemoryClients;
 import io.github.ilyazinkovich.hateoas.promotions.infrastructure.InMemoryPersonalPromoCodes;
 import io.github.ilyazinkovich.hateoas.promotions.infrastructure.InMemoryRegionalPromoCodes;
+import java.util.concurrent.ConcurrentHashMap;
 import ratpack.server.BaseDir;
 import ratpack.server.RatpackServer;
-
-import java.util.concurrent.ConcurrentHashMap;
 
 public class PromoCodesApp {
 
